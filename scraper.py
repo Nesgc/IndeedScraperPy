@@ -6,7 +6,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from datetime import datetime
-import db_setup  # Import to ensure database exists
+import db_setup  
+
 
 sys.stdout.reconfigure(encoding="utf-8")
 
@@ -44,7 +45,7 @@ def get_job_count(job_type):
 
         print(f"✅ Scraped Job Count: {job_type} → {job_count}")
 
-        # Insert into SQLite using a parameterized query
+        # Insert into SQLite
         cur.execute("""
             INSERT INTO AtJobsHist (jobType, JobNumber, TimeStamp) 
             VALUES (?, ?, ?)
@@ -64,10 +65,11 @@ def get_job_count(job_type):
         print(f"❌ Error: {e}")
 
     finally:
+        
         driver.quit()
         con.close()
 
 if __name__ == "__main__":
-    db_setup.setup_database()  # Ensure DB exists before running scraper
+    db_setup.setup_database()  
     get_job_count("pythonIndeed")
     get_job_count("javascriptIndeed")
